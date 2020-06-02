@@ -19,16 +19,12 @@ import com.example.demo.repositories.EmailRepository;
 public class EmailRepositoryIntegrationTest {
 
 	@Autowired
-	private TestEntityManager entityManager;
-
-	@Autowired
 	private EmailRepository emailRepository;
 
 	@Test
 	void findBySenderTest() {
 		EmailEntity email = new EmailEntity("sender@gmail.com", "receiver@gmail.com", "Sample content");
-		entityManager.persist(email);
-		entityManager.flush();
+		emailRepository.save(email);
 		EmailEntity found = emailRepository.findBySender(email.getSender()).orElse(null);
 
 		assertThat(found.getSender()).isEqualTo(email.getSender());
@@ -42,10 +38,10 @@ public class EmailRepositoryIntegrationTest {
 		EmailEntity email1 = new EmailEntity("sender_1@gmail.com", recevierEmail, "Sample content");
 		EmailEntity email2 = new EmailEntity("sender_2@gmail.com", recevierEmail, "Sample content");
 		EmailEntity email3 = new EmailEntity("sender_3@gmail.com", recevierEmail, "Sample content");
-		entityManager.persist(email1);
-		entityManager.persist(email2);
-		entityManager.persist(email3);
-		entityManager.flush();
+		emailRepository.save(email1);
+		emailRepository.save(email2);
+		emailRepository.save(email3);
+
 		
 		List<EmailEntity> found = emailRepository.findByReceiver(recevierEmail).orElse(null);
 
